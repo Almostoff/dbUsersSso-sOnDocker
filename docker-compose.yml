@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: testUsers
+    ports:
+      - "54321:5432"
+    volumes:
+      - ./initdb/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./initdb/dbdata:/data/postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: user_db
+      PG_DATA: data/postgres
+
+  postgresSSO:
+    image: postgres:alpine
+    container_name: testSSO
+    ports:
+      - "54123:5432"
+    volumes:
+      - ./initdbS/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./initdbS/dbdata:/data/postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: tS
+      PG_DATA: data/postgres
+
+  redisSSO:
+    image: redis
+    container_name: redisSSo
+    ports:
+      - "6379:6379"
